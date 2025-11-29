@@ -6,55 +6,61 @@ export default function Dashboard() {
   const [alerts, setAlerts] = useState([])
 
   useEffect(() => {
-    // Animate stats
-    const targets = { claims: 1847, false: 234, alerts: 892, accuracy: 97.3 }
-    const duration = 1500
-    const start = Date.now()
-    
-    const animate = () => {
-      const elapsed = Date.now() - start
-      const progress = Math.min(elapsed / duration, 1)
-      
-      setStats({
-        claims: Math.floor(targets.claims * progress),
-        false: Math.floor(targets.false * progress),
-        alerts: Math.floor(targets.alerts * progress),
-        accuracy: (targets.accuracy * progress).toFixed(1)
-      })
-      
-      if (progress < 1) requestAnimationFrame(animate)
-    }
-    animate()
+    const fetchData = async () => {
+      try {
+        // Fetch Stats
+        const statsRes = await fetch('http://localhost:5000/api/dashboard/stats')
+        const statsData = await statsRes.json()
+        if (statsData.success) {
+          setStats(statsData.stats)
+        }
 
-    // Initial alerts
-    setAlerts([
-      { id: 1, text: 'New viral claim detected on Telegram', time: '2 min ago' },
-      { id: 2, text: 'Debunked: Fake government scheme', time: '5 min ago' },
-      { id: 3, text: 'High urgency: Health misinformation', time: '8 min ago' },
-    ])
+        // Fetch Activity
+        const recordsRes = await fetch('http://localhost:5000/api/blockchain/records?limit=10')
+        const recordsData = await recordsRes.json()
+        if (recordsData.success) {
+          const newActivity = recordsData.records.map(record => ({
+            platform: 'web',
+            text: record.claim_snippet || 'Verified content',
+            status: record.status,
+            time: getRelativeTime(record.timestamp)
+          }))
+          setActivity(newActivity)
 
-    // Simulate live activity
-    const mockActivity = [
-      { platform: 'telegram', text: 'Government giving free money...', status: 'debunked', time: '1m ago' },
-      { platform: 'twitter', text: 'Breaking: Major announcement...', status: 'verified', time: '2m ago' },
-      { platform: 'telegram', text: 'URGENT: Health warning about...', status: 'investigating', time: '3m ago' },
-      { platform: 'facebook', text: 'Viral post claims that...', status: 'debunked', time: '5m ago' },
-    ]
-    setActivity(mockActivity)
-
-    // Add new activity periodically
-    const interval = setInterval(() => {
-      const newItem = {
-        platform: ['telegram', 'twitter', 'facebook'][Math.floor(Math.random() * 3)],
-        text: ['New suspicious claim detected...', 'Viral forward being analyzed...', 'Breaking news verification...'][Math.floor(Math.random() * 3)],
-        status: ['debunked', 'verified', 'investigating'][Math.floor(Math.random() * 3)],
-        time: 'Just now'
+          // Generate alerts from debunked/high-risk records
+          const newAlerts = recordsData.records
+            .filter(r => r.status === 'debunked' || (r.verification_score || 0) < 0.4)
+            .slice(0, 5)
+            .map((r, i) => ({
+              id: i,
+              text: `High Risk: ${r.claim_snippet || 'Suspicious content detected'}`,
+              time: getRelativeTime(r.timestamp)
+            }))
+          setAlerts(newAlerts)
+        }
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error)
       }
-      setActivity(prev => [newItem, ...prev.slice(0, 4)])
-    }, 5000)
+    }
 
+    // Initial fetch
+    fetchData()
+
+    // Poll every 5 seconds
+    const interval = setInterval(fetchData, 5000)
     return () => clearInterval(interval)
   }, [])
+
+  const getRelativeTime = (timestamp) => {
+    if (!timestamp) return 'Just now'
+    const now = Math.floor(Date.now() / 1000)
+    const diff = now - timestamp
+
+    if (diff < 60) return 'Just now'
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`
+    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`
+    return `${Math.floor(diff / 86400)}d ago`
+  }
 
   const platformIcons = {
     whatsapp: 'fab fa-whatsapp',
@@ -175,10 +181,10 @@ export default function Dashboard() {
                     fontSize: '0.7rem',
                     fontWeight: 600,
                     fontFamily: 'var(--font-mono)',
-                    background: item.status === 'debunked' ? 'rgba(255, 107, 107, 0.2)' : 
-                               item.status === 'verified' ? 'rgba(107, 203, 119, 0.2)' : 'rgba(255, 217, 61, 0.2)',
-                    color: item.status === 'debunked' ? 'var(--danger)' : 
-                           item.status === 'verified' ? 'var(--success)' : 'var(--warning)',
+                    background: item.status === 'debunked' ? 'rgba(255, 107, 107, 0.2)' :
+                      item.status === 'verified' ? 'rgba(107, 203, 119, 0.2)' : 'rgba(255, 217, 61, 0.2)',
+                    color: item.status === 'debunked' ? 'var(--danger)' :
+                      item.status === 'verified' ? 'var(--success)' : 'var(--warning)',
                     textTransform: 'uppercase'
                   }}>{item.status}</span>
                 </div>
@@ -269,11 +275,11 @@ export default function Dashboard() {
                 // Get blockchain status from stats
                 const isBlockchain = service === 'Blockchain'
                 const blockchainStatus = stats?.services?.blockchain || 'demo mode'
-                const isActive = isBlockchain 
+                const isActive = isBlockchain
                   ? (blockchainStatus.includes('active') || blockchainStatus.includes('live'))
                   : true
                 const isDemo = isBlockchain && blockchainStatus.includes('demo')
-                
+
                 return (
                   <div key={i} style={{
                     display: 'flex',
@@ -288,16 +294,16 @@ export default function Dashboard() {
                       border: '1px solid rgba(255, 170, 0, 0.3)'
                     })
                   }}>
-                    <div style={{ 
-                      width: '6px', 
-                      height: '6px', 
-                      background: isActive ? (isDemo ? 'var(--warning)' : 'var(--success)') : 'var(--danger)', 
-                      borderRadius: '50%' 
+                    <div style={{
+                      width: '6px',
+                      height: '6px',
+                      background: isActive ? (isDemo ? 'var(--warning)' : 'var(--success)') : 'var(--danger)',
+                      borderRadius: '50%'
                     }}></div>
                     <span>{service}</span>
                     {isBlockchain && isDemo && (
-                      <span style={{ 
-                        fontSize: '0.65rem', 
+                      <span style={{
+                        fontSize: '0.65rem',
                         color: 'var(--warning)',
                         marginLeft: '4px'
                       }}>(demo)</span>

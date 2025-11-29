@@ -278,7 +278,8 @@ class BlockchainService:
             'explorer_url': None,
             'transaction_hash': None,
             'block_number': None,
-            'gas_used': None
+            'gas_used': None,
+            'claim_snippet': claim_text[:100] + '...' if len(claim_text) > 100 else claim_text
         }
         
         # If fully configured, submit to blockchain
