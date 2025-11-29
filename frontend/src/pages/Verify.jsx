@@ -52,11 +52,11 @@ export default function Verify() {
 
     setLoading(true)
     setResult(null)
-    
+
     try {
       let endpoint = '/api/verify'
       let body = {}
-      
+
       if (type === 'url') {
         endpoint = '/api/verify/url'
         body = { url: urlInput.trim() }
@@ -66,26 +66,26 @@ export default function Verify() {
         endpoint = '/api/verify/image'
         body = { image_url: imageInput.trim() }
       }
-      
+
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
       })
-      
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({ error: `Server error: ${response.status}` }))
         throw new Error(errorData.error || `HTTP ${response.status}`)
       }
-      
+
       const data = await response.json()
-      
+
       if (!data.success && data.error) {
         throw new Error(data.error)
       }
-      
+
       setResult({ ...data, type })
-      
+
       // Auto-scroll to results section after verification completes
       setTimeout(() => {
         const resultElement = document.querySelector('.result-container')
@@ -128,21 +128,21 @@ export default function Verify() {
         <div className="verify-card glass-panel-heavy animate-slide-up delay-1">
           {/* Tabs */}
           <div className="verify-tabs">
-            <button 
+            <button
               className={`verify-tab ${activeTab === 'url' ? 'active' : ''}`}
               onClick={() => { setActiveTab('url'); setResult(null); }}
             >
               <i className="fas fa-link"></i>
               <span>News Link</span>
             </button>
-            <button 
+            <button
               className={`verify-tab ${activeTab === 'text' ? 'active' : ''}`}
               onClick={() => { setActiveTab('text'); setResult(null); }}
             >
               <i className="fas fa-comment"></i>
               <span>Text/Message</span>
             </button>
-            <button 
+            <button
               className={`verify-tab ${activeTab === 'image' ? 'active' : ''}`}
               onClick={() => { setActiveTab('image'); setResult(null); }}
             >
@@ -159,7 +159,7 @@ export default function Verify() {
                   <i className="fas fa-newspaper" style={{ color: 'var(--primary)', marginRight: '8px' }}></i>
                   Paste News Article URL
                 </label>
-                <input 
+                <input
                   type="url"
                   className="neo-input"
                   style={{ minHeight: 'auto', padding: 'var(--space-md)' }}
@@ -171,7 +171,7 @@ export default function Verify() {
                   We'll scrape the article, extract claims, and verify against fact-checking sources.
                 </p>
               </div>
-              <button 
+              <button
                 className={`neo-btn-primary ${loading ? 'loading' : ''}`}
                 style={{ width: '100%', marginTop: 'var(--space-md)' }}
                 onClick={() => handleVerify('url')}
@@ -192,7 +192,7 @@ export default function Verify() {
                   <i className="fas fa-comment-dots" style={{ color: 'var(--primary)', marginRight: '8px' }}></i>
                   Paste WhatsApp Forward / Claim / Message
                 </label>
-                <textarea 
+                <textarea
                   className="neo-input"
                   placeholder={`Paste the suspicious message, claim, or WhatsApp forward here...
 
@@ -203,7 +203,7 @@ Example:
                   onChange={(e) => setTextInput(e.target.value)}
                 ></textarea>
               </div>
-              <button 
+              <button
                 className={`neo-btn-primary ${loading ? 'loading' : ''}`}
                 style={{ width: '100%', marginTop: 'var(--space-md)' }}
                 onClick={() => handleVerify('text')}
@@ -224,7 +224,7 @@ Example:
                   <i className="fas fa-image" style={{ color: 'var(--primary)', marginRight: '8px' }}></i>
                   Paste Image URL
                 </label>
-                <input 
+                <input
                   type="url"
                   className="neo-input"
                   style={{ minHeight: 'auto', padding: 'var(--space-md)' }}
@@ -236,7 +236,7 @@ Example:
                   We'll analyze the image for manipulation and extract any text for verification.
                 </p>
               </div>
-              <button 
+              <button
                 className={`neo-btn-primary ${loading ? 'loading' : ''}`}
                 style={{ width: '100%', marginTop: 'var(--space-md)' }}
                 onClick={() => handleVerify('image')}
@@ -301,16 +301,16 @@ Example:
                         fontSize: '0.85rem',
                         fontWeight: 500,
                         background: result.source_credibility.tier === 'tier1' ? 'rgba(107, 203, 119, 0.2)' :
-                                   result.source_credibility.tier === 'tier2' ? 'rgba(0, 245, 212, 0.2)' :
-                                   'rgba(255, 217, 61, 0.2)',
+                          result.source_credibility.tier === 'tier2' ? 'rgba(0, 245, 212, 0.2)' :
+                            'rgba(255, 217, 61, 0.2)',
                         color: result.source_credibility.tier === 'tier1' ? 'var(--success)' :
-                               result.source_credibility.tier === 'tier2' ? 'var(--primary)' :
-                               'var(--warning)'
+                          result.source_credibility.tier === 'tier2' ? 'var(--primary)' :
+                            'var(--warning)'
                       }}>
                         <i className={`fas fa-${result.source_credibility.tier === 'tier1' ? 'check-double' : result.source_credibility.tier === 'tier2' ? 'check' : 'question'}`}></i>
-                        {result.source_credibility.tier === 'tier1' ? 'Highly Trusted Source' : 
-                         result.source_credibility.tier === 'tier2' ? 'Trusted Source' : 
-                         result.source_credibility.tier === 'tier3' ? 'Generally Reliable' : 'Unknown Source'}
+                        {result.source_credibility.tier === 'tier1' ? 'Highly Trusted Source' :
+                          result.source_credibility.tier === 'tier2' ? 'Trusted Source' :
+                            result.source_credibility.tier === 'tier3' ? 'Generally Reliable' : 'Unknown Source'}
                       </span>
                     )}
                   </div>
@@ -436,7 +436,7 @@ Example:
                         </div>
                       </div>
                     ))}
-                    
+
                     {(result.cross_references || []).map((ref, i) => (
                       <div key={i} style={{
                         background: 'rgba(0, 0, 0, 0.2)',
@@ -484,8 +484,8 @@ Example:
                     fontWeight: 600,
                     fontSize: '1.1rem'
                   }}>
-                    {(result.score || 0.5) < 0.4 ? 'DO NOT SHARE - Likely Misinformation!' : 
-                     (result.score || 0.5) < 0.7 ? 'VERIFY before sharing' : 'Appears Credible'}
+                    {(result.score || 0.5) < 0.4 ? 'DO NOT SHARE - Likely Misinformation!' :
+                      (result.score || 0.5) < 0.7 ? 'VERIFY before sharing' : 'Appears Credible'}
                   </span>
                 </div>
 
@@ -501,32 +501,6 @@ Example:
                     <span style={{ fontSize: '1.5rem' }}>⛓️</span>
                     <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#9B59B6' }}>Blockchain Proof</h3>
                     {result.blockchain ? (
-                      <span style={{
-                        padding: '2px 8px',
-                        fontSize: '0.7rem',
-                        borderRadius: '4px',
-                        background: result.blockchain.mode === 'live' ? 'rgba(0, 255, 136, 0.2)' : 'rgba(255, 170, 0, 0.2)',
-                        color: result.blockchain.mode === 'live' ? '#00ff88' : '#ffaa00'
-                      }}>
-                        {result.blockchain.mode === 'live' ? '🔗 On-Chain' : '⏳ Demo Mode'}
-                      </span>
-                    ) : (
-                      <span style={{
-                        padding: '2px 8px',
-                        fontSize: '0.7rem',
-                        borderRadius: '4px',
-                        background: 'rgba(255, 255, 255, 0.1)',
-                        color: 'var(--text-muted)'
-                      }}>
-                        Not Recorded
-                      </span>
-                    )}
-                  </div>
-                  
-                  {result.blockchain ? (
-                    <>
-                    
-                    <div style={{ display: 'grid', gap: 'var(--space-sm)' }}>
                       <div style={{
                         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                         padding: 'var(--space-sm) var(--space-md)',
@@ -553,160 +527,161 @@ Example:
                       </div>
                       
                       {result.blockchain.transaction_hash && (
-                        <div style={{
-                          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                          padding: 'var(--space-sm) var(--space-md)',
-                          background: 'rgba(0, 0, 0, 0.2)',
-                          borderRadius: 'var(--radius-sm)'
-                        }}>
-                          <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Transaction</span>
-                          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>
-                            {result.blockchain.transaction_hash?.slice(0, 10)}...{result.blockchain.transaction_hash?.slice(-6)}
-                          </span>
-                        </div>
-                      )}
-                      
-                      {result.blockchain.block_number && (
-                        <div style={{
-                          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                          padding: 'var(--space-sm) var(--space-md)',
-                          background: 'rgba(0, 0, 0, 0.2)',
-                          borderRadius: 'var(--radius-sm)'
-                        }}>
-                          <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Block</span>
-                          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem' }}>
-                            #{result.blockchain.block_number.toLocaleString()}
-                          </span>
-                        </div>
-                      )}
-                      
                       <div style={{
                         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                         padding: 'var(--space-sm) var(--space-md)',
                         background: 'rgba(0, 0, 0, 0.2)',
                         borderRadius: 'var(--radius-sm)'
                       }}>
-                        <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Timestamp</span>
-                        <span style={{ fontSize: '0.8rem' }}>{result.blockchain.timestamp}</span>
+                        <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Transaction</span>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>
+                          {result.blockchain.transaction_hash?.slice(0, 10)}...{result.blockchain.transaction_hash?.slice(-6)}
+                        </span>
                       </div>
-                    </div>
-                    
-                      {result.blockchain.explorer_url && (
-                        <a
-                          href={result.blockchain.explorer_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-sm)',
-                            marginTop: 'var(--space-lg)',
-                            padding: 'var(--space-md)',
-                            background: 'linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(75, 0, 130, 0.2))',
-                            border: '1px solid rgba(138, 43, 226, 0.5)',
-                            borderRadius: 'var(--radius-md)',
-                            color: '#9B59B6',
-                            textDecoration: 'none',
-                            fontWeight: 500,
-                            transition: 'all 0.2s ease'
-                          }}
-                          onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
-                          onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
-                        >
-                          <i className="fas fa-external-link-alt"></i>
-                          View on Block Explorer
-                        </a>
-                      )}
-                      
-                      <p style={{ 
-                        textAlign: 'center', 
-                        fontSize: '0.75rem', 
-                        color: 'var(--text-muted)', 
-                        marginTop: 'var(--space-md)',
-                        marginBottom: 0
+                    )}
+
+                    {result.blockchain.block_number && (
+                      <div style={{
+                        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                        padding: 'var(--space-sm) var(--space-md)',
+                        background: 'rgba(0, 0, 0, 0.2)',
+                        borderRadius: 'var(--radius-sm)'
                       }}>
-                        🔒 This verification is permanently recorded for transparency and tamper-proof evidence
-                      </p>
-                    </>
-                  ) : (
+                        <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Block</span>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem' }}>
+                          #{result.blockchain.block_number.toLocaleString()}
+                        </span>
+                      </div>
+                    )}
+
                     <div style={{
-                      padding: 'var(--space-lg)',
-                      textAlign: 'center',
+                      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                      padding: 'var(--space-sm) var(--space-md)',
                       background: 'rgba(0, 0, 0, 0.2)',
-                      borderRadius: 'var(--radius-md)'
+                      borderRadius: 'var(--radius-sm)'
                     }}>
-                      <p style={{ 
-                        color: 'var(--text-secondary)', 
-                        marginBottom: 'var(--space-sm)',
-                        fontSize: '0.9rem'
-                      }}>
-                        {result.score < 0.4 
-                          ? '⚠️ High-risk content detected. Blockchain recording is available but not configured.'
-                          : 'ℹ️ Blockchain recording is only enabled for high-risk content (score < 40%). This verification scored ' + Math.round((result.score || 0.5) * 100) + '%.'
-                        }
-                      </p>
-                      <p style={{ 
-                        fontSize: '0.75rem', 
-                        color: 'var(--text-muted)',
-                        marginTop: 'var(--space-sm)'
-                      }}>
-                        🔒 Blockchain anchoring provides tamper-proof evidence for critical misinformation alerts
-                      </p>
+                      <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Timestamp</span>
+                      <span style={{ fontSize: '0.8rem' }}>{result.blockchain.timestamp}</span>
                     </div>
+                  </div>
+
+                  {result.blockchain.explorer_url && (
+                    <a
+                      href={result.blockchain.explorer_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-sm)',
+                        marginTop: 'var(--space-lg)',
+                        padding: 'var(--space-md)',
+                        background: 'linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(75, 0, 130, 0.2))',
+                        border: '1px solid rgba(138, 43, 226, 0.5)',
+                        borderRadius: 'var(--radius-md)',
+                        color: '#9B59B6',
+                        textDecoration: 'none',
+                        fontWeight: 500,
+                        transition: 'all 0.2s ease'
+                      }}
+                      onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
+                      onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+                    >
+                      <i className="fas fa-external-link-alt"></i>
+                      View on Block Explorer
+                    </a>
                   )}
+
+                  <p style={{
+                    textAlign: 'center',
+                    fontSize: '0.75rem',
+                    color: 'var(--text-muted)',
+                    marginTop: 'var(--space-md)',
+                    marginBottom: 0
+                  }}>
+                    🔒 This verification is permanently recorded for transparency and tamper-proof evidence
+                  </p>
+                </>
+                ) : (
+                <div style={{
+                  padding: 'var(--space-lg)',
+                  textAlign: 'center',
+                  background: 'rgba(0, 0, 0, 0.2)',
+                  borderRadius: 'var(--radius-md)'
+                }}>
+                  <p style={{
+                    color: 'var(--text-secondary)',
+                    marginBottom: 'var(--space-sm)',
+                    fontSize: '0.9rem'
+                  }}>
+                    {result.score < 0.4
+                      ? '⚠️ High-risk content detected. Blockchain recording is available but not configured.'
+                      : 'ℹ️ Blockchain recording is only enabled for high-risk content (score < 40%). This verification scored ' + Math.round((result.score || 0.5) * 100) + '%.'
+                    }
+                  </p>
+                  <p style={{
+                    fontSize: '0.75rem',
+                    color: 'var(--text-muted)',
+                    marginTop: 'var(--space-sm)'
+                  }}>
+                    🔒 Blockchain anchoring provides tamper-proof evidence for critical misinformation alerts
+                  </p>
                 </div>
+                  )}
               </div>
+            </div>
             </div>
           )}
 
-          {/* Error */}
-          {result?.error && (
-            <div className="result-container" style={{ marginTop: 'var(--space-xl)', paddingTop: 'var(--space-xl)', borderTop: '1px solid var(--glass-border)' }}>
-              <div style={{ textAlign: 'center', padding: 'var(--space-xl)', color: 'var(--danger)' }}>
-                <i className="fas fa-exclamation-triangle" style={{ fontSize: '2rem', marginBottom: 'var(--space-md)' }}></i>
-                <p>Error: {result.error}</p>
-              </div>
+        {/* Error */}
+        {result?.error && (
+          <div className="result-container" style={{ marginTop: 'var(--space-xl)', paddingTop: 'var(--space-xl)', borderTop: '1px solid var(--glass-border)' }}>
+            <div style={{ textAlign: 'center', padding: 'var(--space-xl)', color: 'var(--danger)' }}>
+              <i className="fas fa-exclamation-triangle" style={{ fontSize: '2rem', marginBottom: 'var(--space-md)' }}></i>
+              <p>Error: {result.error}</p>
             </div>
-          )}
-        </div>
-
-        {/* WhatsApp Banner */}
-        <div className="whatsapp-banner animate-slide-up delay-2">
-          <div className="whatsapp-icon">
-            <i className="fab fa-whatsapp"></i>
           </div>
-          <div>
-            <h4 style={{ color: '#25D366', marginBottom: 'var(--space-xs)' }}>
-              <i className="fas fa-robot"></i> WhatsApp Bot Available!
-            </h4>
-            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: 'var(--space-sm)' }}>
-              Forward suspicious messages directly to our bot for instant verification!
-            </p>
-            <p style={{ fontFamily: 'var(--font-mono)', background: 'rgba(37, 211, 102, 0.2)', padding: 'var(--space-xs) var(--space-sm)', borderRadius: 'var(--radius-sm)', color: '#25D366', display: 'inline-block' }}>
-              +1 415 523 8886
-            </p>
-          </div>
-        </div>
-
-        {/* Verification Sources Info */}
-        <div className="animate-slide-up delay-3" style={{ marginTop: 'var(--space-2xl)', textAlign: 'center' }}>
-          <h3 style={{ marginBottom: 'var(--space-lg)', color: 'var(--text-secondary)' }}>
-            <i className="fas fa-check-circle" style={{ color: 'var(--success)' }}></i> We Verify Against
-          </h3>
-          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 'var(--space-md)' }}>
-            {['Google Fact Check', 'Snopes', 'PolitiFact', 'Alt News India', 'BOOM FactCheck', 'PIB India', 'Reuters', 'WHO'].map(src => (
-              <span key={src} className="glass-badge">{src}</span>
-            ))}
-          </div>
-        </div>
-      </main>
-
-      {/* Footer */}
-      <footer className="footer" style={{ marginTop: 'var(--space-3xl)' }}>
-        <div className="container">
-          <div className="footer-bottom" style={{ borderTop: 'none', paddingTop: 0 }}>
-            <p>&copy; 2025 RapidVerify. Mumbai Hacks '25</p>
-          </div>
-        </div>
-      </footer>
+        )}
     </div>
+
+        {/* WhatsApp Banner */ }
+  <div className="whatsapp-banner animate-slide-up delay-2">
+    <div className="whatsapp-icon">
+      <i className="fab fa-whatsapp"></i>
+    </div>
+    <div>
+      <h4 style={{ color: '#25D366', marginBottom: 'var(--space-xs)' }}>
+        <i className="fas fa-robot"></i> WhatsApp Bot Available!
+      </h4>
+      <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: 'var(--space-sm)' }}>
+        Forward suspicious messages directly to our bot for instant verification!
+      </p>
+      <p style={{ fontFamily: 'var(--font-mono)', background: 'rgba(37, 211, 102, 0.2)', padding: 'var(--space-xs) var(--space-sm)', borderRadius: 'var(--radius-sm)', color: '#25D366', display: 'inline-block' }}>
+        +1 415 523 8886
+      </p>
+    </div>
+  </div>
+
+  {/* Verification Sources Info */ }
+  <div className="animate-slide-up delay-3" style={{ marginTop: 'var(--space-2xl)', textAlign: 'center' }}>
+    <h3 style={{ marginBottom: 'var(--space-lg)', color: 'var(--text-secondary)' }}>
+      <i className="fas fa-check-circle" style={{ color: 'var(--success)' }}></i> We Verify Against
+    </h3>
+    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 'var(--space-md)' }}>
+      {['Google Fact Check', 'Snopes', 'PolitiFact', 'Alt News India', 'BOOM FactCheck', 'PIB India', 'Reuters', 'WHO'].map(src => (
+        <span key={src} className="glass-badge">{src}</span>
+      ))}
+    </div>
+  </div>
+      </main >
+
+    {/* Footer */ }
+    < footer className = "footer" style = {{ marginTop: 'var(--space-3xl)' }
+}>
+  <div className="container">
+    <div className="footer-bottom" style={{ borderTop: 'none', paddingTop: 0 }}>
+      <p>&copy; 2025 RapidVerify. Mumbai Hacks '25</p>
+    </div>
+  </div>
+      </footer >
+    </div >
   )
 }

@@ -3,6 +3,7 @@ import Navbar from './components/Navbar'
 import Landing from './pages/Landing'
 import Verify from './pages/Verify'
 import Dashboard from './pages/Dashboard'
+import BlockchainPage from './pages/BlockchainPage'
 import './index.css'
 
 function App() {

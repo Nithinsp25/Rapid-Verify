@@ -875,4 +875,20 @@ if __name__ == '__main__':
     ║  WhatsApp Bot:  http://localhost:{port}/whatsapp/webhook   ║
     ╚══════════════════════════════════════════════════════════╝
     """)
-    app.run(debug=True, host='0.0.0.0', port=port)
+    
+    # Start Telegram Bot in background thread
+    try:
+        from telegram_bot import run_telegram_bot
+        import threading
+        
+        # Only start if token is present
+        if os.getenv('TELEGRAM_BOT_TOKEN'):
+            telegram_thread = threading.Thread(target=run_telegram_bot, daemon=True)
+            telegram_thread.start()
+            print("✅ Telegram Bot thread started")
+        else:
+            print("⚠️ TELEGRAM_BOT_TOKEN not found. Bot disabled.")
+    except Exception as e:
+        print(f"❌ Failed to start Telegram Bot: {e}")
+
+    app.run(debug=True, host='0.0.0.0', port=port, use_reloader=False)

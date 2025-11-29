@@ -28,6 +28,36 @@ requests==2.31.0
 beautifulsoup4==4.12.2
 aiohttp==3.9.1
 
+# RapidVerify - Dependencies
+# Mumbai Hacks '25 Project
+# All versions pinned for production stability
+
+# Web Framework
+flask==3.0.0
+flask-cors==4.0.0
+gunicorn==21.2.0
+
+# Environment & Config
+python-dotenv==1.0.0
+
+# AI & NLP
+langchain==0.1.0
+langchain-google-genai==1.0.0
+google-generativeai==0.3.2
+
+# Vector Store & Embeddings
+faiss-cpu==1.7.4
+
+# Data Processing
+numpy==1.26.2
+pandas==2.1.4
+scikit-learn==1.3.2
+
+# Web Scraping & HTTP
+requests==2.31.0
+beautifulsoup4==4.12.2
+aiohttp==3.9.1
+
 # WhatsApp Bot (Twilio)
 twilio==8.10.0
 
@@ -37,3 +67,6 @@ Pillow==10.2.0
 # Blockchain Integration (Polygon/Ethereum)
 web3==6.11.3
 eth-account==0.10.0
+
+# Telegram Bot
+python-telegram-bot==20.7

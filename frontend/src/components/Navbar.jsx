@@ -14,14 +14,15 @@ export default function Navbar() {
           </div>
           <span className="logo-text">Rapid<span className="accent">Verify</span></span>
         </Link>
-        
+
         <ul className={`nav-links ${menuOpen ? 'active' : ''}`}>
           <li><Link to="/" className={location.pathname === '/' ? 'active' : ''}>Home</Link></li>
           <li><Link to="/verify" className={location.pathname === '/verify' ? 'active' : ''}>Verify</Link></li>
           <li><Link to="/dashboard" className={location.pathname === '/dashboard' ? 'active' : ''}>Dashboard</Link></li>
+          <li><Link to="/blockchain" className={location.pathname === '/blockchain' ? 'active' : ''}>Blockchain</Link></li>
         </ul>
-        
-        <div 
+
+        <div
           className={`mobile-menu-btn ${menuOpen ? 'active' : ''}`}
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
