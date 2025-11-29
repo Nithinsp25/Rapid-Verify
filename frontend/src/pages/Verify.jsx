@@ -121,7 +121,7 @@ export default function Verify() {
             <i className="fas fa-shield-alt"></i> AI-Powered Verification
           </span>
           <h1>Verify <span className="gradient-text">News & Claims</span></h1>
-          <p>Paste a news link, WhatsApp forward, or suspicious claim. We'll scrape the content, verify against trusted sources, and show you WHERE we verified it.</p>
+          <p>Paste a news link, message, or suspicious claim. We'll scrape the content, verify against trusted sources, and show you WHERE we verified it.</p>
         </div>
 
         {/* Verification Card */}
@@ -190,11 +190,11 @@ export default function Verify() {
               <div className="form-group">
                 <label>
                   <i className="fas fa-comment-dots" style={{ color: 'var(--primary)', marginRight: '8px' }}></i>
-                  Paste WhatsApp Forward / Claim / Message
+                  Paste Claim / Message
                 </label>
                 <textarea
                   className="neo-input"
-                  placeholder={`Paste the suspicious message, claim, or WhatsApp forward here...
+                  placeholder={`Paste the suspicious message or claim here...
 
 Example:
 'URGENT: Government giving free ₹10,000 to all citizens! Share to 10 groups to claim. Forward before deleted!'`}
@@ -501,186 +501,188 @@ Example:
                     <span style={{ fontSize: '1.5rem' }}>⛓️</span>
                     <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#9B59B6' }}>Blockchain Proof</h3>
                     {result.blockchain ? (
+                      <>
+                        <div style={{
+                          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                          padding: 'var(--space-sm) var(--space-md)',
+                          background: 'rgba(0, 0, 0, 0.2)',
+                          borderRadius: 'var(--radius-sm)'
+                        }}>
+                          <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Record ID</span>
+                          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--primary)' }}>
+                            {result.blockchain.record_id?.slice(0, 12)}...{result.blockchain.record_id?.slice(-8)}
+                          </span>
+                        </div>
+
+                        <div style={{
+                          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                          padding: 'var(--space-sm) var(--space-md)',
+                          background: 'rgba(0, 0, 0, 0.2)',
+                          borderRadius: 'var(--radius-sm)'
+                        }}>
+                          <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Network</span>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem' }}>
+                            <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#8247e5' }}></span>
+                            {result.blockchain.network}
+                          </span>
+                        </div>
+
+                        {result.blockchain.transaction_hash && (
+                          <div style={{
+                            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                            padding: 'var(--space-sm) var(--space-md)',
+                            background: 'rgba(0, 0, 0, 0.2)',
+                            borderRadius: 'var(--radius-sm)'
+                          }}>
+                            <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Transaction</span>
+                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>
+                              {result.blockchain.transaction_hash?.slice(0, 10)}...{result.blockchain.transaction_hash?.slice(-6)}
+                            </span>
+                          </div>
+                        )}
+
+                        {result.blockchain.block_number && (
+                          <div style={{
+                            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                            padding: 'var(--space-sm) var(--space-md)',
+                            background: 'rgba(0, 0, 0, 0.2)',
+                            borderRadius: 'var(--radius-sm)'
+                          }}>
+                            <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Block</span>
+                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem' }}>
+                              #{result.blockchain.block_number.toLocaleString()}
+                            </span>
+                          </div>
+                        )}
+
+                        <div style={{
+                          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                          padding: 'var(--space-sm) var(--space-md)',
+                          background: 'rgba(0, 0, 0, 0.2)',
+                          borderRadius: 'var(--radius-sm)'
+                        }}>
+                          <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Timestamp</span>
+                          <span style={{ fontSize: '0.8rem' }}>{result.blockchain.timestamp}</span>
+                        </div>
+
+
+                        {result.blockchain.explorer_url && (
+                          <a
+                            href={result.blockchain.explorer_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-sm)',
+                              marginTop: 'var(--space-lg)',
+                              padding: 'var(--space-md)',
+                              background: 'linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(75, 0, 130, 0.2))',
+                              border: '1px solid rgba(138, 43, 226, 0.5)',
+                              borderRadius: 'var(--radius-md)',
+                              color: '#9B59B6',
+                              textDecoration: 'none',
+                              fontWeight: 500,
+                              transition: 'all 0.2s ease'
+                            }}
+                            onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
+                            onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+                          >
+                            <i className="fas fa-external-link-alt"></i>
+                            View on Block Explorer
+                          </a>
+                        )}
+
+                        <p style={{
+                          textAlign: 'center',
+                          fontSize: '0.75rem',
+                          color: 'var(--text-muted)',
+                          marginTop: 'var(--space-md)',
+                          marginBottom: 0
+                        }}>
+                          🔒 This verification is permanently recorded for transparency and tamper-proof evidence
+                        </p>
+                      </>
+                    ) : (
                       <div style={{
-                        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                        padding: 'var(--space-sm) var(--space-md)',
+                        padding: 'var(--space-lg)',
+                        textAlign: 'center',
                         background: 'rgba(0, 0, 0, 0.2)',
-                        borderRadius: 'var(--radius-sm)'
+                        borderRadius: 'var(--radius-md)'
                       }}>
-                        <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Record ID</span>
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--primary)' }}>
-                          {result.blockchain.record_id?.slice(0, 12)}...{result.blockchain.record_id?.slice(-8)}
-                        </span>
-                      </div>
-                      
-                      <div style={{
-                        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                        padding: 'var(--space-sm) var(--space-md)',
-                        background: 'rgba(0, 0, 0, 0.2)',
-                        borderRadius: 'var(--radius-sm)'
-                      }}>
-                        <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Network</span>
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem' }}>
-                          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#8247e5' }}></span>
-                          {result.blockchain.network}
-                        </span>
-                      </div>
-                      
-                      {result.blockchain.transaction_hash && (
-                      <div style={{
-                        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                        padding: 'var(--space-sm) var(--space-md)',
-                        background: 'rgba(0, 0, 0, 0.2)',
-                        borderRadius: 'var(--radius-sm)'
-                      }}>
-                        <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Transaction</span>
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>
-                          {result.blockchain.transaction_hash?.slice(0, 10)}...{result.blockchain.transaction_hash?.slice(-6)}
-                        </span>
+                        <p style={{
+                          color: 'var(--text-secondary)',
+                          marginBottom: 'var(--space-sm)',
+                          fontSize: '0.9rem'
+                        }}>
+                          {result.score < 0.4
+                            ? '⚠️ High-risk content detected. Blockchain recording is available but not configured.'
+                            : 'ℹ️ Blockchain recording is only enabled for high-risk content (score < 40%). This verification scored ' + Math.round((result.score || 0.5) * 100) + '%.'
+                          }
+                        </p>
+                        <p style={{
+                          fontSize: '0.75rem',
+                          color: 'var(--text-muted)',
+                          marginTop: 'var(--space-sm)'
+                        }}>
+                          🔒 Blockchain anchoring provides tamper-proof evidence for critical misinformation alerts
+                        </p>
                       </div>
                     )}
-
-                    {result.blockchain.block_number && (
-                      <div style={{
-                        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                        padding: 'var(--space-sm) var(--space-md)',
-                        background: 'rgba(0, 0, 0, 0.2)',
-                        borderRadius: 'var(--radius-sm)'
-                      }}>
-                        <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Block</span>
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem' }}>
-                          #{result.blockchain.block_number.toLocaleString()}
-                        </span>
-                      </div>
-                    )}
-
-                    <div style={{
-                      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                      padding: 'var(--space-sm) var(--space-md)',
-                      background: 'rgba(0, 0, 0, 0.2)',
-                      borderRadius: 'var(--radius-sm)'
-                    }}>
-                      <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>Timestamp</span>
-                      <span style={{ fontSize: '0.8rem' }}>{result.blockchain.timestamp}</span>
-                    </div>
                   </div>
-
-                  {result.blockchain.explorer_url && (
-                    <a
-                      href={result.blockchain.explorer_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-sm)',
-                        marginTop: 'var(--space-lg)',
-                        padding: 'var(--space-md)',
-                        background: 'linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(75, 0, 130, 0.2))',
-                        border: '1px solid rgba(138, 43, 226, 0.5)',
-                        borderRadius: 'var(--radius-md)',
-                        color: '#9B59B6',
-                        textDecoration: 'none',
-                        fontWeight: 500,
-                        transition: 'all 0.2s ease'
-                      }}
-                      onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
-                      onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
-                    >
-                      <i className="fas fa-external-link-alt"></i>
-                      View on Block Explorer
-                    </a>
-                  )}
-
-                  <p style={{
-                    textAlign: 'center',
-                    fontSize: '0.75rem',
-                    color: 'var(--text-muted)',
-                    marginTop: 'var(--space-md)',
-                    marginBottom: 0
-                  }}>
-                    🔒 This verification is permanently recorded for transparency and tamper-proof evidence
-                  </p>
-                </>
-                ) : (
-                <div style={{
-                  padding: 'var(--space-lg)',
-                  textAlign: 'center',
-                  background: 'rgba(0, 0, 0, 0.2)',
-                  borderRadius: 'var(--radius-md)'
-                }}>
-                  <p style={{
-                    color: 'var(--text-secondary)',
-                    marginBottom: 'var(--space-sm)',
-                    fontSize: '0.9rem'
-                  }}>
-                    {result.score < 0.4
-                      ? '⚠️ High-risk content detected. Blockchain recording is available but not configured.'
-                      : 'ℹ️ Blockchain recording is only enabled for high-risk content (score < 40%). This verification scored ' + Math.round((result.score || 0.5) * 100) + '%.'
-                    }
-                  </p>
-                  <p style={{
-                    fontSize: '0.75rem',
-                    color: 'var(--text-muted)',
-                    marginTop: 'var(--space-sm)'
-                  }}>
-                    🔒 Blockchain anchoring provides tamper-proof evidence for critical misinformation alerts
-                  </p>
                 </div>
-                  )}
               </div>
-            </div>
             </div>
           )}
 
-        {/* Error */}
-        {result?.error && (
-          <div className="result-container" style={{ marginTop: 'var(--space-xl)', paddingTop: 'var(--space-xl)', borderTop: '1px solid var(--glass-border)' }}>
-            <div style={{ textAlign: 'center', padding: 'var(--space-xl)', color: 'var(--danger)' }}>
-              <i className="fas fa-exclamation-triangle" style={{ fontSize: '2rem', marginBottom: 'var(--space-md)' }}></i>
-              <p>Error: {result.error}</p>
+          {/* Error */}
+          {result?.error && (
+            <div className="result-container" style={{ marginTop: 'var(--space-xl)', paddingTop: 'var(--space-xl)', borderTop: '1px solid var(--glass-border)' }}>
+              <div style={{ textAlign: 'center', padding: 'var(--space-xl)', color: 'var(--danger)' }}>
+                <i className="fas fa-exclamation-triangle" style={{ fontSize: '2rem', marginBottom: 'var(--space-md)' }}></i>
+                <p>Error: {result.error}</p>
+              </div>
             </div>
+          )}
+        </div>
+
+        {/* Telegram Bot Banner */}
+        <div className="whatsapp-banner animate-slide-up delay-2">
+          <div className="whatsapp-icon">
+            <i className="fab fa-telegram"></i>
           </div>
-        )}
-    </div>
+          <div>
+            <h4 style={{ color: '#0088cc', marginBottom: 'var(--space-xs)' }}>
+              <i className="fas fa-robot"></i> Telegram Bot Available!
+            </h4>
+            <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: 'var(--space-sm)' }}>
+              Forward suspicious messages directly to our bot for instant verification!
+            </p>
+            <p style={{ fontFamily: 'var(--font-mono)', background: 'rgba(0, 136, 204, 0.2)', padding: 'var(--space-xs) var(--space-sm)', borderRadius: 'var(--radius-sm)', color: '#0088cc', display: 'inline-block' }}>
+              @rapidverifybot
+            </p>
+          </div>
+        </div>
 
-        {/* WhatsApp Banner */ }
-  <div className="whatsapp-banner animate-slide-up delay-2">
-    <div className="whatsapp-icon">
-      <i className="fab fa-whatsapp"></i>
-    </div>
-    <div>
-      <h4 style={{ color: '#25D366', marginBottom: 'var(--space-xs)' }}>
-        <i className="fas fa-robot"></i> WhatsApp Bot Available!
-      </h4>
-      <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: 'var(--space-sm)' }}>
-        Forward suspicious messages directly to our bot for instant verification!
-      </p>
-      <p style={{ fontFamily: 'var(--font-mono)', background: 'rgba(37, 211, 102, 0.2)', padding: 'var(--space-xs) var(--space-sm)', borderRadius: 'var(--radius-sm)', color: '#25D366', display: 'inline-block' }}>
-        +1 415 523 8886
-      </p>
-    </div>
-  </div>
-
-  {/* Verification Sources Info */ }
-  <div className="animate-slide-up delay-3" style={{ marginTop: 'var(--space-2xl)', textAlign: 'center' }}>
-    <h3 style={{ marginBottom: 'var(--space-lg)', color: 'var(--text-secondary)' }}>
-      <i className="fas fa-check-circle" style={{ color: 'var(--success)' }}></i> We Verify Against
-    </h3>
-    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 'var(--space-md)' }}>
-      {['Google Fact Check', 'Snopes', 'PolitiFact', 'Alt News India', 'BOOM FactCheck', 'PIB India', 'Reuters', 'WHO'].map(src => (
-        <span key={src} className="glass-badge">{src}</span>
-      ))}
-    </div>
-  </div>
+        {/* Verification Sources Info */}
+        <div className="animate-slide-up delay-3" style={{ marginTop: 'var(--space-2xl)', textAlign: 'center' }}>
+          <h3 style={{ marginBottom: 'var(--space-lg)', color: 'var(--text-secondary)' }}>
+            <i className="fas fa-check-circle" style={{ color: 'var(--success)' }}></i> We Verify Against
+          </h3>
+          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 'var(--space-md)' }}>
+            {['Google Fact Check', 'Snopes', 'PolitiFact', 'Alt News India', 'BOOM FactCheck', 'PIB India', 'Reuters', 'WHO'].map(src => (
+              <span key={src} className="glass-badge">{src}</span>
+            ))}
+          </div>
+        </div>
       </main >
 
-    {/* Footer */ }
-    < footer className = "footer" style = {{ marginTop: 'var(--space-3xl)' }
-}>
-  <div className="container">
-    <div className="footer-bottom" style={{ borderTop: 'none', paddingTop: 0 }}>
-      <p>&copy; 2025 RapidVerify. Mumbai Hacks '25</p>
-    </div>
-  </div>
+      {/* Footer */}
+      < footer className="footer" style={{ marginTop: 'var(--space-3xl)' }
+      }>
+        <div className="container">
+          <div className="footer-bottom" style={{ borderTop: 'none', paddingTop: 0 }}>
+            <p>&copy; 2025 RapidVerify. Mumbai Hacks '25</p>
+          </div>
+        </div>
       </footer >
     </div >
   )

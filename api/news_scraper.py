@@ -375,7 +375,7 @@ class NewsVerifier:
         return result
     
     def verify_text(self, text: str) -> dict:
-        """Verify a text claim (WhatsApp message, etc.) - PRODUCTION VERSION"""
+        """Verify a text claim (message, etc.) - PRODUCTION VERSION"""
         result = {
             'success': True,
             'text': text,

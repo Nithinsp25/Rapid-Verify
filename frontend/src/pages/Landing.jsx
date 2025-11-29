@@ -79,7 +79,7 @@ export default function Landing() {
               <div className="scan-line"></div>
               <div className="claim-preview">
                 <div className="claim-header">
-                  <span className="platform-badge whatsapp"><i className="fab fa-whatsapp"></i></span>
+                  <span className="platform-badge telegram"><i className="fab fa-telegram"></i></span>
                   <span className="claim-source">Viral Forward</span>
                 </div>
                 <p className="claim-text">"Breaking: Free COVID vaccines cause magnetic effects..."</p>
@@ -276,12 +276,11 @@ const features = [
   {
     icon: 'fas fa-radar',
     title: 'Continuous Social Scanning',
-    desc: '24/7 monitoring of Twitter/X, WhatsApp, Telegram, Facebook and news sites for viral claims and emerging misinformation.',
+    desc: '24/7 monitoring of Twitter/X, Telegram, Facebook and news sites for viral claims and emerging misinformation.',
     glow: 'cyan',
     extra: (
       <div className="feature-platforms">
         <span className="platform-icon"><i className="fab fa-twitter"></i></span>
-        <span className="platform-icon"><i className="fab fa-whatsapp"></i></span>
         <span className="platform-icon"><i className="fab fa-telegram"></i></span>
         <span className="platform-icon"><i className="fab fa-facebook"></i></span>
       </div>
@@ -318,11 +317,11 @@ const features = [
   {
     icon: 'fas fa-bell',
     title: 'Instant Notifications',
-    desc: 'Push verified updates via dashboards, mobile apps, WhatsApp bots, Telegram channels, and SMS alerts.',
+    desc: 'Push verified updates via dashboards, mobile apps, Telegram bot, and SMS alerts.',
     glow: 'orange',
     extra: (
       <div style={{ display: 'flex', gap: '1rem' }}>
-        {[{ icon: 'fas fa-mobile-alt', label: 'App Push' }, { icon: 'fab fa-whatsapp', label: 'WhatsApp' }, { icon: 'fas fa-sms', label: 'SMS' }].map((n, i) => (
+        {[{ icon: 'fas fa-mobile-alt', label: 'App Push' }, { icon: 'fab fa-telegram', label: 'Telegram' }, { icon: 'fas fa-sms', label: 'SMS' }].map((n, i) => (
           <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.25rem', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
             <i className={n.icon} style={{ fontSize: '1.2rem', color: 'var(--primary)' }}></i>
             <span>{n.label}</span>
@@ -373,7 +372,6 @@ const steps = [
 
 const platforms = [
   { name: 'Twitter / X', icon: 'fab fa-twitter', class: 'twitter', claims: '1,234' },
-  { name: 'WhatsApp', icon: 'fab fa-whatsapp', class: 'whatsapp', claims: '856' },
   { name: 'Telegram', icon: 'fab fa-telegram', class: 'telegram', claims: '567' },
   { name: 'Facebook', icon: 'fab fa-facebook', class: 'facebook', claims: '923' },
   { name: 'Instagram', icon: 'fab fa-instagram', class: 'instagram', claims: '445' },

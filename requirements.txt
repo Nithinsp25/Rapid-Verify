@@ -58,9 +58,6 @@ requests==2.31.0
 beautifulsoup4==4.12.2
 aiohttp==3.9.1
 
-# WhatsApp Bot (Twilio)
-twilio==8.10.0
-
 # Image Processing
 Pillow==10.2.0
 

@@ -28,14 +28,14 @@ export default function Dashboard() {
 
     // Initial alerts
     setAlerts([
-      { id: 1, text: 'New viral claim detected on WhatsApp', time: '2 min ago' },
+      { id: 1, text: 'New viral claim detected on Telegram', time: '2 min ago' },
       { id: 2, text: 'Debunked: Fake government scheme', time: '5 min ago' },
       { id: 3, text: 'High urgency: Health misinformation', time: '8 min ago' },
     ])
 
     // Simulate live activity
     const mockActivity = [
-      { platform: 'whatsapp', text: 'Government giving free money...', status: 'debunked', time: '1m ago' },
+      { platform: 'telegram', text: 'Government giving free money...', status: 'debunked', time: '1m ago' },
       { platform: 'twitter', text: 'Breaking: Major announcement...', status: 'verified', time: '2m ago' },
       { platform: 'telegram', text: 'URGENT: Health warning about...', status: 'investigating', time: '3m ago' },
       { platform: 'facebook', text: 'Viral post claims that...', status: 'debunked', time: '5m ago' },
@@ -45,7 +45,7 @@ export default function Dashboard() {
     // Add new activity periodically
     const interval = setInterval(() => {
       const newItem = {
-        platform: ['whatsapp', 'twitter', 'telegram', 'facebook'][Math.floor(Math.random() * 4)],
+        platform: ['telegram', 'twitter', 'facebook'][Math.floor(Math.random() * 3)],
         text: ['New suspicious claim detected...', 'Viral forward being analyzed...', 'Breaking news verification...'][Math.floor(Math.random() * 3)],
         status: ['debunked', 'verified', 'investigating'][Math.floor(Math.random() * 3)],
         time: 'Just now'
@@ -231,7 +231,6 @@ export default function Dashboard() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-sm)' }}>
               {[
                 { name: 'Twitter/X', claims: '234', icon: 'fab fa-twitter', color: '#1da1f2' },
-                { name: 'WhatsApp', claims: '189', icon: 'fab fa-whatsapp', color: '#25d366' },
                 { name: 'Telegram', claims: '156', icon: 'fab fa-telegram', color: '#0088cc' },
                 { name: 'Facebook', claims: '145', icon: 'fab fa-facebook', color: '#1877f2' },
                 { name: 'News Sites', claims: '123', icon: 'fas fa-newspaper', color: 'var(--primary)' },
@@ -266,7 +265,7 @@ export default function Dashboard() {
               System Status
             </h4>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-sm)' }}>
-              {['API Server', 'AI Verifier', 'Scraper', 'Gemini AI', 'WhatsApp Bot', 'Blockchain'].map((service, i) => {
+              {['API Server', 'AI Verifier', 'Scraper', 'Gemini AI', 'Telegram Bot', 'Blockchain'].map((service, i) => {
                 // Get blockchain status from stats
                 const isBlockchain = service === 'Blockchain'
                 const blockchainStatus = stats?.services?.blockchain || 'demo mode'

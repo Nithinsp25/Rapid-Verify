@@ -27,7 +27,7 @@ During emergencies, festivals, and public health crises, **misinformation spread
 ## ✨ Key Features
 
 ### 🔍 Continuous Social Scanning
-- 24/7 monitoring of **Twitter/X, WhatsApp, Telegram, Facebook**, and news websites
+- 24/7 monitoring of **Twitter/X, Telegram, Facebook**, and news websites
 - Real-time detection of viral claims and emerging misinformation
 - AI-powered trend analysis and urgency ranking
 
@@ -50,7 +50,7 @@ During emergencies, festivals, and public health crises, **misinformation spread
 ### 📢 Public Notifications
 - **Dashboard**: Real-time monitoring interface
 - **Web App**: User-friendly verification portal
-- **Chatbots**: WhatsApp & Telegram integration (planned)
+- **Chatbots**: Telegram bot integration
 - **SMS Alerts**: For critical misinformation warnings
 
 ### ⛓️ Blockchain Transparency
@@ -186,7 +186,7 @@ Content-Type: application/json
 
 {
   "claim": "Text to verify",
-  "source": "WhatsApp Forward"
+  "source": "Telegram Message"
 }
 ```
 
@@ -220,8 +220,8 @@ POST /api/alerts/subscribe
 Content-Type: application/json
 
 {
-  "channel": "whatsapp",
-  "contact": "+919876543210",
+  "channel": "telegram",
+  "username": "@rapidverifybot",
   "topics": ["health", "emergency"]
 }
 ```
@@ -322,8 +322,7 @@ RapidVerify/
 - [x] Web dashboard & verification UI
 - [x] API endpoints
 - [x] Neomorphism/Glassmorphism design
-- [ ] WhatsApp Bot integration
-- [ ] Telegram Bot integration
+- [x] Telegram Bot integration (@rapidverifybot)
 - [ ] Mobile app (React Native)
 - [ ] Browser extension
 - [x] Blockchain integration (Polygon)

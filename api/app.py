@@ -41,14 +41,6 @@ CORS(app, origins=allowed_origins, supports_credentials=True)
 # Import News Scraper and Verifier
 from news_scraper import scraper, verifier, NewsScraper, NewsVerifier
 
-# Import and register WhatsApp blueprint
-try:
-    from whatsapp_bot import whatsapp_bp
-    app.register_blueprint(whatsapp_bp, url_prefix='/whatsapp')
-    print("✅ WhatsApp Bot registered at /whatsapp")
-except ImportError as e:
-    print(f"⚠️ WhatsApp Bot not available: {e}")
-
 # Google Gemini Configuration
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 gemini_model = None
@@ -115,7 +107,7 @@ def verify_page():
 @app.route('/api/verify', methods=['POST'])
 def verify_claim():
     """
-    Verify text content (WhatsApp message, claim, etc.)
+    Verify text content (claim, message, etc.)
     """
     data = request.get_json()
     
@@ -668,7 +660,6 @@ def get_platforms():
     # In production, this would query actual monitoring statistics
     platforms = [
         {"name": "Twitter/X", "icon": "twitter", "status": "active", "claims_today": 0},
-        {"name": "WhatsApp", "icon": "whatsapp", "status": "active", "claims_today": 0},
         {"name": "Telegram", "icon": "telegram", "status": "active", "claims_today": 0},
         {"name": "Facebook", "icon": "facebook", "status": "active", "claims_today": 0},
         {"name": "Instagram", "icon": "instagram", "status": "active", "claims_today": 0},
@@ -838,7 +829,6 @@ def api_status():
             "news_scraper": "active",
             "news_verifier": "active",
             "gemini_ai": "active" if gemini_model else "inactive (no API key)",
-            "whatsapp_bot": "active" if os.getenv('TWILIO_ACCOUNT_SID') else "inactive (no Twilio)",
             "fact_check_api": "active" if GOOGLE_API_KEY else "limited (no API key)",
             "blockchain": blockchain_status_str
         },
@@ -871,8 +861,7 @@ if __name__ == '__main__':
     ║  Dashboard:     http://localhost:{port}/dashboard          ║
     ║  Verify Page:   http://localhost:{port}/verify             ║
     ║  API Status:    http://localhost:{port}/api/status         ║
-    ╠══════════════════════════════════════════════════════════╣
-    ║  WhatsApp Bot:  http://localhost:{port}/whatsapp/webhook   ║
+    ║  Telegram Bot:  Available via TELEGRAM_BOT_TOKEN           ║
     ╚══════════════════════════════════════════════════════════╝
     """)
     
