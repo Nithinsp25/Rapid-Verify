@@ -105,3 +105,4 @@ The frontend calls these blockchain endpoints:
 
 The blockchain integration works seamlessly with the existing RapidVerify UI and provides transparent, tamper-proof verification records!
 
+
