@@ -1,0 +1,28 @@
+{
+  "name": "rapidverify-contracts",
+  "version": "1.0.0",
+  "description": "RapidVerify Smart Contracts for Blockchain Verification",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:local": "hardhat run scripts/deploy.js --network localhost",
+    "deploy:amoy": "hardhat run scripts/deploy.js --network polygon_amoy",
+    "deploy:polygon": "hardhat run scripts/deploy.js --network polygon_mainnet",
+    "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia",
+    "verify": "hardhat verify --network polygon_amoy",
+    "node": "hardhat node"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.19.0",
+    "dotenv": "^16.3.1"
+  },
+  "keywords": [
+    "rapidverify",
+    "blockchain",
+    "misinformation",
+    "verification",
+    "polygon"
+  ]
+}
+
